@@ -94,29 +94,78 @@ class TodoAppState extends State<TodoApp> {
       body: ListView.builder(
         itemCount: _tasks.length,
         itemBuilder: (context, index) {
-          return ListTile(
-            leading: Icon(Icons.task, color: Colors.blue), // Task icon
-            title: Text(_tasks[index].taskName), // Task title
+          final task = _tasks[index];
 
-            // Only show the subtitle (description) if it's not empty
-            subtitle: _tasks[index].description.isNotEmpty
-                ? Text(_tasks[index].description)
-                : null,
+          return Dismissible(
+            key: Key(task.hashCode.toString()), // Unique key per task
+            direction: DismissDirection.endToStart, // Swipe left to delete
+            background: Container(
+              color: Colors.red,
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              alignment: Alignment.centerRight,
+              child: const Icon(Icons.delete, color: Colors.white),
+            ),
 
-            // Right-aligned due date and time display
-            trailing: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  _tasks[index].formattedDate,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+            // Confirm before deleting
+            confirmDismiss: (direction) async {
+              return await showDialog<bool>(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Delete Task'),
+                  content: Text(
+                      "Are you sure you want to delete '${task.taskName}'?"),
+                  actions: [
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.of(context).pop(false), // Cancel
+                      child: const Text('Cancel'),
+                    ),
+                    TextButton(
+                      onPressed: () =>
+                          Navigator.of(context).pop(true), // Confirm
+                      child: const Text('Delete'),
+                    ),
+                  ],
                 ),
-                Text(
-                  'by ${_tasks[index].formattedTime}',
-                  style: TextStyle(fontSize: 12),
+              );
+            },
+            onDismissed: (direction) {
+              setState(() {
+                _tasks.removeAt(index);
+              });
+
+              // Post-deletion confirmation
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Task '${task.taskName}' deleted"),
+                  duration: Duration(seconds: 2),
                 ),
-              ],
+              );
+            },
+            child: ListTile(
+              leading: Icon(Icons.task, color: Colors.blue), // Task icon
+              title: Text(_tasks[index].taskName), // Task title
+
+              // Only show the subtitle (description) if it's not empty
+              subtitle: _tasks[index].description.isNotEmpty
+                  ? Text(_tasks[index].description)
+                  : null,
+
+              // Right-aligned due date and time display
+              trailing: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    _tasks[index].formattedDate,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
+                  Text(
+                    'by ${_tasks[index].formattedTime}',
+                    style: TextStyle(fontSize: 12),
+                  ),
+                ],
+              ),
             ),
           );
         },

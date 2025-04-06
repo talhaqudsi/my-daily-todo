@@ -79,23 +79,61 @@ class TaskFormState extends State<TaskForm> {
       try {
         _formKey.currentState!.save();
 
-        // Add the new task to the TodoApp via the global key
-        widget.appKey.currentState?.addTask(Task(
+        final newTask = Task(
           taskName: _taskName,
           description: _description,
           dueDate: _dueDate,
-        ));
+        );
+
+        // Add the task to TodoApp
+        widget.appKey.currentState?.addTask(newTask);
+
+        // Show task details popup
+        _showTaskDetailsDialog(newTask);
+
+        log('Task Name: $_taskName, Description: $_description, Due Date: $_dueDate');
       } catch (e) {
-        // Show error if something fails
         ScaffoldMessenger.of(context).clearSnackBars();
         SnackBar snackBar = SnackBar(content: Text('Error caught: $e'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-
-      // Log and return to previous screen
-      log('Task Name: $_taskName, Description: $_description, Due Date: $_dueDate');
-      Navigator.pop(context);
     }
+  }
+
+  // Confirmation dialog after task is added
+  void _showTaskDetailsDialog(Task task) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('New Task Added'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('${task.taskName}', style: TextStyle(fontWeight: FontWeight.bold)),
+            if (task.description.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 8.0),
+                child: Text('${task.description}'),
+              ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                  'Due by ${task.formattedDate} at ${task.formattedTime}'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+            Navigator.of(context).pop(); // Close the alert dialog
+            Navigator.of(context).pop(); // Return to main screen
+            },
+            child: const Text('Close'),
+          ),
+        ],
+      ),
+    );
   }
 
   // Sets _dueDate when the form is first initialized
