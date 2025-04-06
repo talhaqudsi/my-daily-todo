@@ -6,10 +6,10 @@ A simple, clean, and mobile-friendly to-do list app built with Flutter. Users ca
 
 ## Features
 
-- ✅ Add tasks with a name, description, and due date/time
-- 📆 Uses native date and time pickers
-- ⏱ Rounds time selections to the nearest **15-minute increment** (rounded **up**)
-- 💡 Welcome dialog on first launch instructing users how to get started
+- Add tasks with a name, description, and due date/time
+- Uses native date and time pickers
+- Rounds time selections to the nearest **15-minute increment** (rounded **up**)
+- Welcome dialog on first launch instructing users how to get started
 - Clean Material Design layout
 - Fully responsive on Android and iOS
 
@@ -39,7 +39,7 @@ lib/
 
 ---
 
-## 🧪 How to Run
+## How to Run
 
 1. **Clone this repo**
    ```bash
