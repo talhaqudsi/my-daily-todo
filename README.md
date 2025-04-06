@@ -43,7 +43,7 @@ lib/
 
 1. **Clone this repo**
    ```bash
-   git clone https://github.com/your-username/my-daily-todo.git
+   git clone https://github.com/talhaqudsi/my-daily-todo.git
    cd my-daily-todo
    ```
 
@@ -61,9 +61,10 @@ lib/
 
 ## TODO / Future Enhancements
 
-- [ ] Persistent local storage (`shared_preferences` or `hive`)
+- [ ] Persistent local storage (`shared_preferences`)
 - [ ] Task completion with checkboxes
-- [X] Swipe to delete tasks [DONE]
+- [X] Swipe to delete tasks with confirmation dialog
+- [X] New task confirmation dialog
 - [ ] Task sorting by due date
 - [ ] Optional dark mode support
 
