@@ -63,7 +63,7 @@ lib/
 
 - [ ] Persistent local storage (`shared_preferences` or `hive`)
 - [ ] Task completion with checkboxes
-- [ ] Swipe to delete tasks
+- [X] Swipe to delete tasks [DONE]
 - [ ] Task sorting by due date
 - [ ] Optional dark mode support
 
